@@ -9,7 +9,7 @@
     "start": "node build/server.js"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=16",
     "npm": ">=7"
   },
   "keywords": [],
@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
+    "@types/bcryptjs": "^2.4.2",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "fastify": "^4.21.0",
     "zod": "^3.21.4"
