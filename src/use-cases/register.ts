@@ -1,8 +1,9 @@
 import { hash } from "bcryptjs";
 import { UserRepository } from "@/repositories/users-repository";
 import { UserAlreadyExists } from "@/errors/user-already-exists";
+import { User } from "@prisma/client";
 
-interface RegisterServiceProps {
+interface RegisterUseCaseProps {
   name: string;
   email: string;
   password: string;
@@ -15,10 +16,14 @@ interface RegisterServiceProps {
 // I - Interface Segregation Principle  ❌ (Segregação de interfaces)
 // D - Dependency Inversion Principle   ✅ (Inversão de dependência)
 
-export class RegisterService {
+interface RegisterUseCaseResponse {
+  user: User;
+}
+
+export class RegisterUseCase {
   constructor(private usersRepository: UserRepository) {}
 
-  async execute({ name, email, password }: RegisterServiceProps) {
+  async execute({ name, email, password }: RegisterUseCaseProps): Promise<RegisterUseCaseResponse> {
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
@@ -27,10 +32,12 @@ export class RegisterService {
 
     const passwordHash = await hash(password, 6);
 
-    await this.usersRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       password_hash: passwordHash,
     });
+
+    return { user };
   }
 }

@@ -1,6 +1,6 @@
 version: "3"
 
-services:
+use-cases:
   database:
     container_name: apisolid
     image: bitnami/postgresql
